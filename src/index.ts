@@ -1,5 +1,12 @@
 import {getConfig} from './searchConfig'
 
-getConfig().then(config => {
-    console.log(config)
-})
+export const generateStories = async () => {
+    // Read config
+    const config = await getConfig()
+
+    // Read components folders
+
+    // Generate stories
+
+    // Write stories
+}
