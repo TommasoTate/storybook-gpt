@@ -1,5 +1,6 @@
 import {getConfig} from './searchConfig'
 import {buildComponentTree} from './buildComponentTree'
+import {getStories} from './stories'
 
 export const generateStories = async () => {
     // Read config
@@ -8,9 +9,10 @@ export const generateStories = async () => {
     // Read components folders
 
     const tree = buildComponentTree(config.componentsPath)
-    console.log(tree)
 
     // Generate stories
+    const stories = getStories(tree)
+    console.log(stories)
 
     // Write stories
 }
