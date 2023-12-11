@@ -11,7 +11,7 @@ export const generateStories = async () => {
     const tree = buildComponentTree(config.componentsPath)
 
     // Generate stories
-    const stories = getStories(tree)
+    const stories = await getStories(tree)
     console.log(stories)
 
     // Write stories

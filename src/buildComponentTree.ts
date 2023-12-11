@@ -3,7 +3,7 @@ import path from 'path';
 
 export interface TsxFileInfo {
     fileName: `${string}.tsx`
-    fullPath: string;
+    fullPath: string
 }
 
 export const buildComponentTree = (dirPath: string): TsxFileInfo[] => {

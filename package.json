@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bluebird": "^3.5.42",
     "@types/node": "^20.10.4",
     "@types/react": "^18.2.43",
     "dotenv": "^16.3.1",
@@ -26,6 +27,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
     "lilconfig": "^3.0.0",
     "openai": "^4.20.1"
   }

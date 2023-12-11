@@ -1,5 +1,7 @@
 import {TsxFileInfo} from './buildComponentTree'
 import fs from 'fs'
+import {getOpenAiResponse} from './openai'
+import { map} from 'bluebird'
 
 
 const removeFileExtension = (filename: `${string}.tsx`): string => {
@@ -8,19 +10,19 @@ const removeFileExtension = (filename: `${string}.tsx`): string => {
         return parts.join('.'); // Rejoin the remaining parts
 }
 
-const generateStory = (component: string): string => {
+const generateStory = async (component: string): Promise<string | null> => {
 
     // call openai api to generate story
-    return `mock story for ${component}`
+    return getOpenAiResponse(component)
 
 }
 
 export const getStories = (components: TsxFileInfo[]) => {
-    return components.map(component => {
+    return map(components,async component => {
         // read component file
         const componentFile = fs.readFileSync(component.fullPath, 'utf8')
         // generate story
-        const story = generateStory(componentFile)
+        const story = await generateStory(componentFile)
         // return story
         return {
             fileName: `${removeFileExtension(component.fileName)}.stories.tsx`,
