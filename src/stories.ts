@@ -1,14 +1,14 @@
-import {TsxFileInfo} from './buildComponentTree'
 import fs from 'fs'
 import path from 'path'
-import {getOpenAiResponse} from './openai'
+import {getOpenAiResponse} from './services/openai'
 import { map} from 'bluebird'
+import {TsxFileInfo} from './types'
 
 
 const removeFileExtension = (filename: `${string}.tsx`): string => {
     let parts = filename.split('.')
-        parts.pop(); // Remove the last element (the extension)
-        return parts.join('.'); // Rejoin the remaining parts
+        parts.pop() // Remove the last element (the extension)
+        return parts.join('.') // Rejoin the remaining parts
 }
 
 const generateStory = async (component: string): Promise<string | null> => {
@@ -42,7 +42,7 @@ export const getStories = (components: TsxFileInfo[]) => {
     })
 }
 
-export const writeStories = async (basePath: string, stories: {fileName: string, content: string | null}[]) => {
+export const writeStories = (basePath: string, stories: {fileName: string, content: string | null}[]) => {
     stories.forEach(story => {
         // create directory if it doesn't exist
         if(!fs.existsSync(basePath)){

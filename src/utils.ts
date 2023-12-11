@@ -1,12 +1,9 @@
-import fs from 'fs';
-import path from 'path';
+import {Config, TsxFileInfo} from './types'
+import fs from 'fs'
+import path from 'path'
+import {lilconfig, Options} from 'lilconfig'
 
-export interface TsxFileInfo {
-    fileName: `${string}.tsx`
-    fullPath: string
-}
-
-export const buildComponentTree = (dirPath: string): TsxFileInfo[] => {
+export const readComponentsFolder = (dirPath: string): TsxFileInfo[] => {
     const files = fs.readdirSync(dirPath)
 
     return files.reduce<TsxFileInfo[]>((accumulator, file) => {
@@ -15,7 +12,7 @@ export const buildComponentTree = (dirPath: string): TsxFileInfo[] => {
 
         if (stat.isDirectory()) {
             // Recursively search in subdirectories and combine with current accumulator
-            return [...accumulator, ...buildComponentTree(filePath)]
+            return [...accumulator, ...readComponentsFolder(filePath)]
         }
         if (file.endsWith('.tsx')) {
             // Return accumulator with new .tsx file info added
@@ -27,4 +24,14 @@ export const buildComponentTree = (dirPath: string): TsxFileInfo[] => {
 
         return accumulator
     }, [])
+}
+const options: Options = {
+    searchPlaces: ['storybook-gpt.config.json']
+}
+export const getConfig = async (): Promise<Config> => {
+    const explorer = lilconfig('storybook-gpt', options)
+
+    const result = await explorer.search()
+
+    return result?.config
 }
