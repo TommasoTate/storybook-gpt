@@ -1,12 +1,12 @@
+import { TsxFileInfo } from './types'
+import { getOpenAiResponse } from './services/openai'
+import { map } from 'bluebird'
 import fs from 'fs'
 import path from 'path'
-import {getOpenAiResponse} from './services/openai'
-import { map} from 'bluebird'
-import {TsxFileInfo} from './types'
 
 
 const removeFileExtension = (filename: `${string}.tsx`): string => {
-    let parts = filename.split('.')
+    const parts = filename.split('.')
         parts.pop() // Remove the last element (the extension)
         return parts.join('.') // Rejoin the remaining parts
 }
@@ -42,13 +42,13 @@ export const getStories = (components: TsxFileInfo[]) => {
     })
 }
 
-export const writeStories = (basePath: string, stories: {fileName: string, content: string | null}[]) => {
+export const writeStories = (basePath: string, stories: { fileName: string, content: string | null }[]) => {
     stories.forEach(story => {
         // create directory if it doesn't exist
         if(!fs.existsSync(basePath)){
             fs.mkdirSync(basePath)
         }
         // create file if it doesn't exist
-        fs.writeFileSync(path.join(basePath, story.fileName), story.content!, {flag: 'w'})
+        fs.writeFileSync(path.join(basePath, story.fileName), story.content!, { flag: 'w' })
     })
 }

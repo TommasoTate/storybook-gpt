@@ -1,4 +1,4 @@
 import 'dotenv/config'
-import {generateStories} from './index'
+import { generateStories } from './index'
 
 generateStories()

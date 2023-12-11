@@ -1,4 +1,4 @@
-import {OPEN_AI_SYSTEM_PROMPT} from './prompt'
+import { OPEN_AI_SYSTEM_PROMPT } from './prompt'
 import OpenAI from 'openai'
 
 export const getOpenAiResponse = async (component: string) => {

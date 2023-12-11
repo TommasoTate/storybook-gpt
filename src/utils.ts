@@ -1,7 +1,7 @@
-import {Config, TsxFileInfo} from './types'
+import { Config, TsxFileInfo } from './types'
+import { Options, lilconfig } from 'lilconfig'
 import fs from 'fs'
 import path from 'path'
-import {lilconfig, Options} from 'lilconfig'
 
 export const readComponentsFolder = (dirPath: string): TsxFileInfo[] => {
     const files = fs.readdirSync(dirPath)

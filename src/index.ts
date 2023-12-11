@@ -1,5 +1,5 @@
-import {getStories, writeStories} from './stories'
-import {getConfig, readComponentsFolder} from './utils'
+import { getConfig, readComponentsFolder } from './utils'
+import { getStories, writeStories } from './stories'
 
 export const generateStories = async () => {
     // Read config
