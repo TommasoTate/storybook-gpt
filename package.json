@@ -8,14 +8,17 @@
   "files": [
     "dist"
   ],
+  "bin": {
+    "storybook-gpt": "./dist/bin.js"
+  },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup src/index.ts src/bin.ts",
     "test": "exit 0",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint --fix src --ext .ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "TommyBez",
   "license": "ISC",
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.4.1",
