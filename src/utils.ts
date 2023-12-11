@@ -1,10 +1,24 @@
-import { Config, TsxFileInfo } from './types'
+import { Config, RetryOptions, TsxFileInfo } from './types'
 import { Options, lilconfig } from 'lilconfig'
 import fs from 'fs'
 import path from 'path'
 
 export const readComponentsFolder = (dirPath: string): TsxFileInfo[] => {
+
     const files = fs.readdirSync(dirPath)
+
+    if (files.includes('index.tsx')) {
+        // Remove the first and last segments (the components folder and the file name)
+        // and return the parent folder name as the file name
+        const segments = dirPath.split('/')
+        const parentFolder = segments.slice(-1)
+        return [{
+            fileName: `${parentFolder}.tsx`,
+            fullPath: path.join(dirPath, 'index.tsx'),
+            segments: path.join(...segments.slice(1, -1))
+        }]
+
+    }
 
     return files.reduce<TsxFileInfo[]>((accumulator, file) => {
         const filePath = path.join(dirPath, file)
@@ -15,9 +29,12 @@ export const readComponentsFolder = (dirPath: string): TsxFileInfo[] => {
             return [...accumulator, ...readComponentsFolder(filePath)]
         }
         if (file.endsWith('.tsx')) {
+            const segments = filePath.split('/')
             // Return accumulator with new .tsx file info added
             return [...accumulator, {
                 fileName: file,
+                // Remove the first and last segments (the components folder and the file name)
+                segments: segments.length < 3 ? null : path.join(...filePath.split('/').slice(1, -1)),
                 fullPath: filePath
             }] as TsxFileInfo[]
         }
@@ -36,11 +53,6 @@ export const getConfig = async (): Promise<Config> => {
     return result?.config
 }
 
-type RetryOptions = {
-    retries: number,
-    delayMillis: number
-    extraInfo?: string
-}
 export const retryWithExponentialBackoff = <T, Args extends string>(fn: (args: Args) => Promise<T | undefined>, options: RetryOptions ) => async (args: Args): Promise<T | undefined> =>  {
     const { retries, delayMillis, extraInfo } = options
     const retry = async (retries: number, attempts: number): Promise<T | undefined>=> {

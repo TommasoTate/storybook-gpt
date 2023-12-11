@@ -6,4 +6,11 @@ export type Config = {
 export interface TsxFileInfo {
     fileName: `${string}.tsx`
     fullPath: string
+    segments: string
+}
+
+export type RetryOptions = {
+    retries: number,
+    delayMillis: number
+    extraInfo?: string
 }

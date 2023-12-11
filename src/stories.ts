@@ -14,16 +14,13 @@ const removeFileExtension = (filename: `${string}.tsx`): string => {
 
 const generateStory = async (component: string, componentName: string): Promise<string | null | undefined> => {
 
-   /* const mock = "import type { Meta, StoryObj } from '@storybook/react';\n" +
-        "import { Button } from './Button';\n" +
-        '\n' +
-        'const meta = {\n' +
-        "  title: 'Button',\n" +
-        '  component: Button,\n' +
-        '} as Meta<typeof >'
-
-
- return mock*/
+ /*return 'import type { Meta, StoryObj } from \'@storybook/react\';\n' +
+     'import { Button } from \'./Button\';\n' +
+     '\n' +
+     'const meta = {\n' +
+     '  title: \'Button\',\n' +
+     '  component: Button,\n' +
+     '} as Meta<typeof >'*/
     // call openai api to generate story
     return retryWithExponentialBackoff(getOpenAiResponse,
         { extraInfo: componentName, delayMillis: 1000, retries: 10 })(component)
@@ -38,19 +35,21 @@ export const getStories = (components: TsxFileInfo[]) => {
         const story = await generateStory(componentFile, component.fileName)
         // return story
         return {
+            segments: component.segments,
             fileName: `${removeFileExtension(component.fileName)}.stories.tsx`,
             content: story
         }
     })
 }
 
-export const writeStories = (basePath: string, stories: { fileName: string, content?: string | null }[]) => {
+export const writeStories = (basePath: string, stories: { fileName: string, content?: string | null, segments?: string }[]) => {
     stories.forEach(story => {
-        // create directory if it doesn't exist
-        if(!fs.existsSync(basePath)){
-            fs.mkdirSync(basePath)
+        if(story.segments && !fs.existsSync(path.join(basePath, story.segments))){
+            fs.mkdirSync(path.join(basePath, story.segments), { recursive: true })
         }
+        // create directory if it doesn't exist
         // create file if it doesn't exist
-        fs.writeFileSync(path.join(basePath, story.fileName), story.content!, { flag: 'w' })
+        const filePath = story.segments ? path.join(basePath, story.segments, story.fileName) : path.join(basePath, story.fileName)
+        fs.writeFileSync(filePath, story.content!, { flag: 'w' })
     })
 }

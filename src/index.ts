@@ -11,7 +11,6 @@ export const generateStories = async () => {
 
     // Generate stories
     const stories = await getStories(tree)
-    console.log(stories)
 
     // Write stories under storybookPath
     console.log('Writing stories...', config.storybookPath)
