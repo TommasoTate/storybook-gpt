@@ -1,6 +1,6 @@
 import {getConfig} from './searchConfig'
 import {buildComponentTree} from './buildComponentTree'
-import {getStories} from './stories'
+import {getStories, writeStories} from './stories'
 
 export const generateStories = async () => {
     // Read config
@@ -14,5 +14,8 @@ export const generateStories = async () => {
     const stories = await getStories(tree)
     console.log(stories)
 
-    // Write stories
+    // Write stories under storybookPath
+    console.log('Writing stories...', config.storybookPath)
+    writeStories(config.storybookPath, stories)
+
 }
