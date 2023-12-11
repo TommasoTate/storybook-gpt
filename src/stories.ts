@@ -1,6 +1,7 @@
 import { TsxFileInfo } from './types'
 import { getOpenAiResponse } from './services/openai'
 import { map } from 'bluebird'
+import { retryWithExponentialBackoff } from './utils'
 import fs from 'fs'
 import path from 'path'
 
@@ -24,7 +25,7 @@ const generateStory = async (component: string): Promise<string | null> => {
 
  return mock*/
     // call openai api to generate story
-    return getOpenAiResponse(component)
+    return retryWithExponentialBackoff(getOpenAiResponse)(component)
 
 }
 
@@ -39,7 +40,7 @@ export const getStories = (components: TsxFileInfo[]) => {
             fileName: `${removeFileExtension(component.fileName)}.stories.tsx`,
             content: story
         }
-    })
+    }, { concurrency: 2 })
 }
 
 export const writeStories = (basePath: string, stories: { fileName: string, content: string | null }[]) => {

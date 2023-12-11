@@ -22,8 +22,8 @@ export const getOpenAiResponse = async (component: string) => {
         temperature: 0
     })
 
-
     return response.choices[0].message.content
+
 }
 
 const buildUserPrompt = (component: string) => {
