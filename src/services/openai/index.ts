@@ -7,7 +7,7 @@ export const getOpenAiResponse = async (component: string) => {
     })
 
     const response = await openai.chat.completions.create({
-        max_tokens: 1024,
+        max_tokens: 512,
         messages: [
             {
                 content: OPEN_AI_SYSTEM_PROMPT,
