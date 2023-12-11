@@ -1,6 +1,6 @@
 {
   "name": "storybook-gpt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -19,7 +19,7 @@
   },
   "keywords": [],
   "author": "TommyBez",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.4.1",
     "@types/bluebird": "^3.5.42",
