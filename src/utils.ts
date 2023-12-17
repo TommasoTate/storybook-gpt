@@ -3,7 +3,7 @@ import { Options, lilconfig } from 'lilconfig'
 import fs from 'fs'
 import path from 'path'
 
-export const readComponentsFolder = (dirPath: string, excludePaths?: (string)[]): TsxFileInfo[] => {
+export const readComponentsFolder = (dirPath: string, excludePaths?: (string | RegExp)[]): TsxFileInfo[] => {
 
     const reducer = (accumulator: TsxFileInfo[], file: string) => {
         // Exclude subfolders matching the excludePaths
