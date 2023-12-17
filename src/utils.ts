@@ -53,13 +53,13 @@ export const getConfig = async (): Promise<Config> => {
     return result?.config
 }
 
-export const retryWithExponentialBackoff = <T, Args extends string>(fn: (args: Args) => Promise<T | undefined>, options: RetryOptions ) => async (args: Args): Promise<T | undefined> =>  {
+export const retryWithExponentialBackoff = <T, Args extends string[]>(fn: (...args: Args) => Promise<T | undefined>, options: RetryOptions ) => async (...args: Args): Promise<T | undefined> =>  {
     const { retries, delayMillis, extraInfo } = options
     const retry = async (retries: number, attempts: number): Promise<T | undefined>=> {
         try {
             // Try executing the function with the provided arguments
             console.log(`Attempt ${attempts} of ${retries} with args ${extraInfo}`)
-            return await fn(args)
+            return await fn(...args)
         } catch (error) {
             // Check for the specific error and retry count
 

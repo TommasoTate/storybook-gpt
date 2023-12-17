@@ -14,3 +14,7 @@ export type RetryOptions = {
     delayMillis: number
     extraInfo?: string
 }
+
+export type PromptOptions = {
+    parentFolder: string
+}

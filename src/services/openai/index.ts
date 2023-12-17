@@ -1,7 +1,7 @@
-import { OPEN_AI_SYSTEM_PROMPT } from './prompt'
+import { getPrompt } from './prompt'
 import OpenAI from 'openai'
 
-export const getOpenAiResponse = async (component: string) => {
+export const getOpenAiResponse = async (component: string, parentFolder: string) => {
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY
     })
@@ -10,13 +10,13 @@ export const getOpenAiResponse = async (component: string) => {
         max_tokens: 512,
         messages: [
             {
-                content: OPEN_AI_SYSTEM_PROMPT,
-                role: 'system'
-            },
+                content: getPrompt(component, { parentFolder }),
+                role: 'user'
+            }/*,
             {
                 content: buildUserPrompt(component),
                 role: 'user'
-            }
+            }*/
         ],
         model: 'gpt-4',
         temperature: 0
@@ -24,8 +24,4 @@ export const getOpenAiResponse = async (component: string) => {
 
     return response.choices[0].message.content
 
-}
-
-const buildUserPrompt = (component: string) => {
-    return component
 }
