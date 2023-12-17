@@ -1,4 +1,7 @@
+// Example config file
+
 {
   "componentsPath": "components",
-  "storybookPath": "storybook"
+  "storybookPath": "storybook",
+  "excludePaths": ["ui"]
 }

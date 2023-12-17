@@ -1,6 +1,7 @@
 export type Config = {
     componentsPath: string
     storybookPath: string
+    excludePaths?: (string | RegExp)[]
 }
 
 export interface TsxFileInfo {
