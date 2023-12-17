@@ -3,30 +3,31 @@ import { Options, lilconfig } from 'lilconfig'
 import fs from 'fs'
 import path from 'path'
 
-export const readComponentsFolder = (dirPath: string): TsxFileInfo[] => {
+export const readComponentsFolder = (dirPath: string, excludePaths?: (string)[]): TsxFileInfo[] => {
 
-    const files = fs.readdirSync(dirPath)
-
-    if (files.includes('index.tsx')) {
-        // Remove the first and last segments (the components folder and the file name)
-        // and return the parent folder name as the file name
-        const segments = dirPath.split('/')
-        const parentFolder = segments.slice(-1)
-        return [{
-            fileName: `${parentFolder}.tsx`,
-            fullPath: path.join(dirPath, 'index.tsx'),
-            segments: path.join(...segments.slice(1, -1))
-        }]
-
-    }
-
-    return files.reduce<TsxFileInfo[]>((accumulator, file) => {
+    const reducer = (accumulator: TsxFileInfo[], file: string) => {
+        // Exclude subfolders matching the excludePaths
+        if (excludePaths && excludePaths.some((excludePath) => (typeof excludePath === 'string' ? new RegExp(excludePath) : excludePath).test(file))) {
+            return accumulator
+        }
         const filePath = path.join(dirPath, file)
         const stat = fs.statSync(filePath)
 
         if (stat.isDirectory()) {
-            // Recursively search in subdirectories and combine with current accumulator
-            return [...accumulator, ...readComponentsFolder(filePath)]
+            // Recursively search in non-excluded subdirectories and combine with current accumulator
+            return [...accumulator, ...readComponentsFolder(filePath, excludePaths)]
+        }
+        if (files.includes('index.tsx')) {
+            // Remove the first and last segments (the components folder and the file name)
+            // and return the parent folder name as the file name
+            const segments = dirPath.split('/')
+            const parentFolder = segments.slice(-1)
+            return [{
+                fileName: `${parentFolder}.tsx`as const,
+                fullPath: path.join(dirPath, 'index.tsx'),
+                segments: path.join(...segments.slice(1, -1))
+            }]
+    
         }
         if (file.endsWith('.tsx')) {
             const segments = filePath.split('/')
@@ -40,7 +41,13 @@ export const readComponentsFolder = (dirPath: string): TsxFileInfo[] => {
         }
 
         return accumulator
-    }, [])
+    }
+    const files = fs.readdirSync(dirPath)
+
+
+    return files.reduce<TsxFileInfo[]>(reducer, [])
+
+    
 }
 const options: Options = {
     searchPlaces: ['storybook-gpt.config.json']
