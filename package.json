@@ -1,7 +1,7 @@
 {
   "name": "storybook-gpt",
   "version": "1.0.2",
-  "description": "",
+  "description": "A package for creating storybook component stories using GPT-4.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
