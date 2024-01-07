@@ -7,14 +7,13 @@ export const generateStories = async () => {
 
     // Read components folders
 
-    const tree = readComponentsFolder(config.componentsPath, config.excludePaths)
-    console.log(tree)
+    const tree = readComponentsFolder(config.components, config.exclude)
 
     // Generate stories
    const stories = await getStories(tree)
 
     // Write stories under storybookPath
-    console.log('Writing stories...', config.storybookPath)
-    writeStories(config.storybookPath, stories)
+    console.log('Writing stories...', config.stories)
+    writeStories(config.stories, stories)
 
 }
